@@ -34,7 +34,9 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 	public static void main(String[] args) {
 		System.out.printf("✓ -  Welcome to %s! - Version %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
-		System.out.printf("! - Your workbook(s) should be placed under /data folder.\n\n");
+		System.out.printf("! - Your workbook(s) should be placed under /data folder.\n");
+		
+		System.out.print("\n---\n\n");
 
 		Properties props = FileUtils.readProperties(FileUtils.getExternalFile("configurations.properties"));
 		
@@ -48,6 +50,8 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		
 		selectWorkbook();
 		selectAttendanceSheet();
+		
+		System.out.print("---\n\n");
 
 		while (running) {
 			currentMode.printInputPrefix();
@@ -56,7 +60,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 			handleInput(rawInput);
 
-			System.out.print("\n");
+			System.out.print("\n---\n\n");
 		}
 
 		System.out.printf("✓ -  Termination of %s succeeded. Goodbye!", PROGRAM_NAME);
