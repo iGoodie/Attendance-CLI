@@ -47,7 +47,7 @@ public abstract class Command {
 		if (Syntax.truthy(examples) && examples.length > 0) {
 			sb.append("\n\nExamples:");
 			for(CommandExample example : examples)
-				sb.append(String.format("\n $ %s\t%s", example.getStatement(), example.getDescription()));
+				sb.append(String.format("\n $ %s\n  %s", example.getStatement(), example.getDescription()));
 		}
 		
 		return sb.toString();

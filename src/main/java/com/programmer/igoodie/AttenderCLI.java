@@ -3,6 +3,7 @@ package com.programmer.igoodie;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.Scanner;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,6 +13,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import com.programmer.igoodie.command.Command;
 import com.programmer.igoodie.command.named.NamedCommand;
 import com.programmer.igoodie.command.structured.StructuredCommand;
+import com.programmer.igoodie.config.AttendanceCLIConfig;
 import com.programmer.igoodie.mode.Mode;
 import com.programmer.igoodie.register.Modes;
 import com.programmer.igoodie.utils.io.FileUtils;
@@ -25,15 +27,25 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 	private static boolean running = true;
 	private @Getter static Mode currentMode = Modes.getMainMode();
+	private @Getter static AttendanceCLIConfig configs;
 	private static File workbookFile;
 	private static Workbook workbook;
 	private static Sheet attendanceSheet;
 
 	public static void main(String[] args) {
 		System.out.printf("✓ -  Welcome to %s! - Version %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
-
 		System.out.printf("! - Your workbook(s) should be placed under /data folder.\n\n");
 
+		Properties props = FileUtils.readProperties(FileUtils.getExternalFile("configurations.properties"));
+		
+		if(Syntax.falsey(props)) {
+			System.out.println("X - Config file (configurations.properties) "
+					+ "is missing/corrupted. Program terminating.");
+			return;
+		}
+		
+		configs = new AttendanceCLIConfig(props);
+		
 		selectWorkbook();
 		selectAttendanceSheet();
 

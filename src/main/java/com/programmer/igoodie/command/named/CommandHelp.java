@@ -43,6 +43,14 @@ public class CommandHelp extends NamedCommand {
 
 			getParentMode().commandStream().forEach(command -> {
 				System.out.printf(" $ %s\t%s\n", command.getUsage(), command.getDescription());
+				
+				CommandExample[] examples = command.getExamples();	
+				
+				if (Syntax.truthy(examples) && examples.length > 0) {
+					System.out.printf("\tExamples:\n");
+					for(CommandExample example : examples)
+						System.out.printf("\t$ %s\t%s\n", example.getStatement(), example.getDescription());
+				}
 			});
 
 		} else {
