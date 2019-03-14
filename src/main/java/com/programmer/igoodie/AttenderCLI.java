@@ -58,7 +58,11 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 			String rawInput = SCANNER.nextLine();
 
-			handleInput(rawInput);
+			try {
+				handleInput(rawInput);
+			} catch(Exception e) {
+				System.out.println("X - Internal error. Report this to the developer.");
+			}
 
 			System.out.print("\n---\n\n");
 		}
@@ -88,7 +92,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		boolean selected = false;
 		while (!selected) {
 			try {
-				System.out.print("Select Workbook > ");
+				System.out.print("Select Workbook (index) > ");
 				int selection = Integer.parseInt(SCANNER.nextLine());
 
 				if (selection >= 0 && selection < workbooks.length) {
