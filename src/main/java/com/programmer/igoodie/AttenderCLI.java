@@ -16,6 +16,7 @@ import com.programmer.igoodie.command.structured.StructuredCommand;
 import com.programmer.igoodie.config.AttendanceCLIConfig;
 import com.programmer.igoodie.mode.Mode;
 import com.programmer.igoodie.register.Modes;
+import com.programmer.igoodie.util.WorkbookUtils;
 import com.programmer.igoodie.utils.io.FileUtils;
 import com.programmer.igoodie.utils.system.Syntax;
 
@@ -61,6 +62,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 			try {
 				handleInput(rawInput);
 			} catch(Exception e) {
+				e.printStackTrace();
 				System.out.println("X - Internal error. Report this to the developer.");
 			}
 
@@ -156,6 +158,11 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		}
 	}
 
+	public static void performAutosave() {
+		File autosaveFile = FileUtils.getExternalFile("autosaved.xlsx");
+		WorkbookUtils.save(workbook, autosaveFile);
+	}
+	
 	public static void handleInput(String rawInput) {
 		String[] args = rawInput.split("\\s+");
 		Command command;

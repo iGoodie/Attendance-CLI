@@ -58,11 +58,13 @@ public class SheetUtils {
 			return false;
 
 		Cell cell = row.getCell(col);
-
+		
+		// TODO FIX: Keep EVERY cell style
+		
 		if (Syntax.falsey(cell)) {
 			cell = row.createCell(col);
 		}
-
+		
 		cell.setCellValue(value);
 
 		return true;

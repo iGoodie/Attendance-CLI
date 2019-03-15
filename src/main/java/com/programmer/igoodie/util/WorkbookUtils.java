@@ -11,7 +11,7 @@ public class WorkbookUtils {
 	public static void save(Workbook workbook, File outputFile) {
 		try {
 			if(!outputFile.exists()) {
-				outputFile.mkdirs();
+				outputFile.getParentFile().mkdirs();
 				outputFile.createNewFile();
 			}
 			
