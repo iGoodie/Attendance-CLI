@@ -2,7 +2,7 @@ package com.programmer.igoodie.command.named;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.programmer.igoodie.AttenderCLI;
+import com.programmer.igoodie.AttendanceCLI;
 import com.programmer.igoodie.mode.ModeWeek;
 import com.programmer.igoodie.util.StringValidator;
 
@@ -40,7 +40,7 @@ public class CommandWeek extends NamedCommand {
 		}
 
 		int weekNo = Integer.parseInt(args[0]);
-		int weekLength = AttenderCLI.getConfigs().weekLength();
+		int weekLength = AttendanceCLI.getConfigs().weekLength();
 
 		if (weekNo < 1 || weekNo > weekLength) {
 			System.out.printf("X - Week number must be between [1,%d]\n", weekLength);

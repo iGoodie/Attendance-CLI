@@ -2,7 +2,7 @@ package com.programmer.igoodie.command.named;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.programmer.igoodie.AttenderCLI;
+import com.programmer.igoodie.AttendanceCLI;
 
 public class CommandLoad extends NamedCommand {
 
@@ -12,7 +12,7 @@ public class CommandLoad extends NamedCommand {
 	
 	@Override
 	public String getDescription() {
-		return "Reselects a workbook and sheet from /data folder.";
+		return "Reselects a workbook and sheet from /workspace folder.";
 	}
 	
 	@Override
@@ -26,9 +26,9 @@ public class CommandLoad extends NamedCommand {
 		
 		System.out.println();
 		
-		AttenderCLI.performAutosave();
-		AttenderCLI.selectWorkbook();
-		AttenderCLI.selectAttendanceSheet();
+		AttendanceCLI.performAutosave();
+		AttendanceCLI.selectWorkbook();
+		AttendanceCLI.selectAttendanceSheet();
 		
 		return true;
 	}

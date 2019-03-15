@@ -39,7 +39,7 @@ public class CommandHelp extends NamedCommand {
 	@Override
 	public boolean execute(Sheet sheet, String[] args) {
 		if (args.length == 0) {
-			System.out.printf("Commands for Mode: %s\n", parentMode.getName());
+			System.out.printf("%d Commands for Mode: %s\n", parentMode.numberOfCommands(), parentMode.getName());
 
 			getParentMode().commandStream().forEach(command -> {
 				System.out.printf(" $ %s\t%s\n", command.getUsage(), command.getDescription());

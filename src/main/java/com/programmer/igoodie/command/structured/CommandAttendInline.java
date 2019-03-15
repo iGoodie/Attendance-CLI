@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.programmer.igoodie.AttenderCLI;
+import com.programmer.igoodie.AttendanceCLI;
 import com.programmer.igoodie.command.meta.CommandExample;
 import com.programmer.igoodie.util.SheetUtils;
 import com.programmer.igoodie.util.StringValidator;
@@ -70,17 +70,17 @@ public class CommandAttendInline extends StructuredCommand {
 				weekExclusionList.add(Integer.parseInt(args[i]));
 			}
 
-			AttenderCLI.performAutosave();
+			AttendanceCLI.performAutosave();
 			return pushAttendancesExcept(sheet, attendeeId, weekExclusionList.stream().mapToInt(i -> i).toArray());
 
 		} else {			
-			AttenderCLI.performAutosave();
+			AttendanceCLI.performAutosave();
 			return pushAttendances(sheet, attendeeId, Arrays.stream(args, 1, args.length).mapToInt(Integer::parseInt).toArray());
 		}
 	}
 
 	private boolean pushAttendances(Sheet sheet, double attendeeId, int[] weeks) {
-		int colIndex = SheetUtils.colIndex(AttenderCLI.getConfigs().attendeeIdCol);
+		int colIndex = SheetUtils.colIndex(AttendanceCLI.getConfigs().attendeeIdCol);
 		Row attendeeRow = SheetUtils.linearFindRow(sheet, colIndex, attendeeId);
 
 		if (Syntax.falsey(attendeeRow)) {
@@ -89,14 +89,14 @@ public class CommandAttendInline extends StructuredCommand {
 		}
 
 		for (int week : weeks) {
-			int weekCol = SheetUtils.weekCol(week, AttenderCLI.getConfigs());
+			int weekCol = SheetUtils.weekCol(week, AttendanceCLI.getConfigs());
 			
 			if (weekCol == -1) {
 				System.out.printf("X - Week no %d out of bounds.\n", week);
 				continue;
 			}
 			
-			if (SheetUtils.markCell(attendeeRow, weekCol, AttenderCLI.getConfigs().attendedSign))
+			if (SheetUtils.markCell(attendeeRow, weekCol, AttendanceCLI.getConfigs().attendedSign))
 				System.out.printf("✓ - Marked %.0f attended at week %d\n", attendeeId, week);
 		}
 		
@@ -104,7 +104,7 @@ public class CommandAttendInline extends StructuredCommand {
 	}
 
 	private boolean pushAttendancesExcept(Sheet sheet, double attendeeId, int[] exceptWeeks) {
-		int weekLength = (int) (AttenderCLI.getConfigs().weekFinishCol - AttenderCLI.getConfigs().weekStartCol) + 1;
+		int weekLength = (int) (AttendanceCLI.getConfigs().weekFinishCol - AttendanceCLI.getConfigs().weekStartCol) + 1;
 		List<Integer> weeks = IntStream.rangeClosed(1, weekLength).boxed().collect(Collectors.toList());
 
 		for (int exceptWeek : exceptWeeks) {

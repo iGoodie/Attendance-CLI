@@ -3,7 +3,7 @@ package com.programmer.igoodie.command.structured;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.programmer.igoodie.AttenderCLI;
+import com.programmer.igoodie.AttendanceCLI;
 import com.programmer.igoodie.mode.ModeWeek;
 import com.programmer.igoodie.util.SheetUtils;
 import com.programmer.igoodie.util.StringValidator;
@@ -34,7 +34,7 @@ public class CommandAttendWeekly extends StructuredCommand {
 	@Override
 	public boolean execute(Sheet sheet, String[] args) {
 		int weekNo = ((ModeWeek)parentMode).getWeek();
-		int colIndex = SheetUtils.colIndex(AttenderCLI.getConfigs().attendeeIdCol);
+		int colIndex = SheetUtils.colIndex(AttendanceCLI.getConfigs().attendeeIdCol);
 		
 		double attendeeId = Double.parseDouble(args[0]);
 		
@@ -45,11 +45,11 @@ public class CommandAttendWeekly extends StructuredCommand {
 			return false;
 		}
 		
-		int weekCol = SheetUtils.weekCol(weekNo, AttenderCLI.getConfigs());
+		int weekCol = SheetUtils.weekCol(weekNo, AttendanceCLI.getConfigs());
 		
-		SheetUtils.markCell(attendeeRow, weekCol, AttenderCLI.getConfigs().attendedSign);
+		SheetUtils.markCell(attendeeRow, weekCol, AttendanceCLI.getConfigs().attendedSign);
 		System.out.printf("✓ - Marked %.0f attended at week %d\n", attendeeId, weekNo);
-		AttenderCLI.performAutosave();
+		AttendanceCLI.performAutosave();
 		
 		return true;
 	}

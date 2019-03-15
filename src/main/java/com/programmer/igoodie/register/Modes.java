@@ -5,6 +5,11 @@ import java.util.stream.Stream;
 
 import com.programmer.igoodie.mode.ModeMainMenu;
 import com.programmer.igoodie.mode.ModeWeek;
+import com.programmer.igoodie.command.named.CommandAutosave;
+import com.programmer.igoodie.command.named.CommandExit;
+import com.programmer.igoodie.command.named.CommandHelp;
+import com.programmer.igoodie.command.named.CommandLegend;
+import com.programmer.igoodie.command.named.CommandMode;
 import com.programmer.igoodie.mode.Mode;
 
 public final class Modes {
@@ -32,7 +37,16 @@ public final class Modes {
 	}
 
 	private static void registerMode(Mode m) {
+		registerStrictCommands(m);
 		MODES.put(m.getName(), m);
+	}
+	
+	private static void registerStrictCommands(Mode m) {
+		m.registerCommand(new CommandHelp());
+		m.registerCommand(new CommandExit());
+		m.registerCommand(new CommandAutosave());
+		m.registerCommand(new CommandMode());
+		m.registerCommand(new CommandLegend());
 	}
 
 }

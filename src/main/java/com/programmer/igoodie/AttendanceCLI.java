@@ -23,7 +23,7 @@ import com.programmer.igoodie.utils.system.Syntax;
 
 import lombok.Getter;
 
-public final class AttenderCLI implements AttendanceCLIConstants {
+public final class AttendanceCLI implements AttendanceCLIConstants {
 
 	private static final Scanner SCANNER = new Scanner(System.in);
 
@@ -36,7 +36,10 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 	public static void main(String[] args) {
 		System.out.printf("✓ -  Welcome to %s! - Version %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
-		System.out.printf("! - Your workbook(s) should be placed under /data folder.\n");
+		
+		FileUtils.setExternalDataPath(System.getProperty("user.dir") + "/workspace");
+
+		System.out.printf("! - Your workbook(s) should be placed under /workspace folder.\n");
 		
 		System.out.print("\n---\n\n");
 
@@ -58,7 +61,6 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 		while (running) {
 			System.out.print(currentMode.getInputPrefix());
-
 			String rawInput = SCANNER.nextLine();
 
 			try {
@@ -75,17 +77,17 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 	}
 
 	public static void selectWorkbook() {
-		// Filter workbook files from /data folder
+		// Filter workbook files from /workspace folder
 		File[] workbooks = FileUtils.getExternalFile("")
 				.listFiles((dir, name) -> name.toLowerCase().matches(".*\\.(xlsx|xlsb)"));
 
 		// No workbooks were found. Terminate immidiately
 		if (Syntax.falsey(workbooks) || workbooks.length == 0) {
-			System.out.println("X - No workbook within /data folder. Terminating the program.");
+			System.out.println("X - No workbook within /workspace folder. Terminating the program.");
 			System.exit(0);
 		}
 
-		System.out.printf("? - Select one of the accesible workbooks (under /data folder):\n");
+		System.out.printf("? - Select one of the accesible workbooks (under /workspace folder):\n");
 
 		// Print all the visible workspaces
 		for (int i = 0; i < workbooks.length; i++) {
@@ -169,7 +171,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		if(!currentMode.isAutosaveEnabled())
 			return;
 		
-		File autosaveFile = FileUtils.getExternalFile("autosaved.xlsx");
+		File autosaveFile = FileUtils.getExternalFile(configs.autosaveFile);
 		WorkbookUtils.save(workbook, autosaveFile);
 	}
 
@@ -202,12 +204,14 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		// Invalid argument length
 		if (!command.correctLength(args)) {
 			System.out.printf("X - Invalid argument length for command: %s\n", command.getName());
+			System.out.printf("! - Usage: %s\n", command.getUsage());
 			return;
 		}
 
 		// Invalid syntax for command
 		if (!command.correctSyntax(args)) {
 			System.out.printf("X - Invalid syntax for command: %s\n", command.getName());
+			System.out.printf("! - Usage: %s\n", command.getUsage());
 			return;
 		}
 
@@ -221,12 +225,14 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		// Invalid argument length
 		if (!command.correctLength(structure)) {
 			System.out.printf("X - Invalid argument length for structure: %s\n", String.join(" ", structure));
+			System.out.printf("! - Usage: %s\n", command.getUsage());
 			return;
 		}
 
 		// Invalid syntax for command
 		if (!command.correctSyntax(structure)) {
 			System.out.printf("X - Invalid syntax for structure: %s\n", String.join(" ", structure));
+			System.out.printf("! - Usage: %s\n", command.getUsage());
 			return;
 		}
 

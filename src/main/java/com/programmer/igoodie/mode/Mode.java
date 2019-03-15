@@ -44,6 +44,10 @@ public abstract class Mode {
 				structuredCommands.stream());
 	}
 	
+	public int numberOfCommands() {
+		return namedCommands.size() + structuredCommands.size();
+	}
+	
 	public void toggleAutosave() {
 		autosaveEnabled = !autosaveEnabled;
 	}

@@ -2,7 +2,7 @@ package com.programmer.igoodie.command.named;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.programmer.igoodie.AttenderCLI;
+import com.programmer.igoodie.AttendanceCLI;
 
 public class CommandExit extends NamedCommand {
 
@@ -27,7 +27,7 @@ public class CommandExit extends NamedCommand {
 
 	@Override
 	public boolean execute(Sheet sheet, String[] args) {
-		AttenderCLI.terminate();
+		AttendanceCLI.terminate();
 		return true;
 	}
 	

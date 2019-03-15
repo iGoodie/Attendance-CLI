@@ -2,7 +2,7 @@ package com.programmer.igoodie.command.named;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.programmer.igoodie.AttenderCLI;
+import com.programmer.igoodie.AttendanceCLI;
 import com.programmer.igoodie.command.meta.CommandExample;
 import com.programmer.igoodie.mode.Mode;
 import com.programmer.igoodie.register.Modes;
@@ -53,12 +53,12 @@ public class CommandMode extends NamedCommand {
 			return false;
 		}
 		
-		if(AttenderCLI.getCurrentMode().equals(mode)) {
+		if(AttendanceCLI.getCurrentMode().equals(mode)) {
 			System.out.printf("X - %s mode is already active.\n", mode.getName());
 			return false;
 		}
 		
-		AttenderCLI.changeMode(mode);
+		AttendanceCLI.changeMode(mode);
 		
 		return true;
 	}

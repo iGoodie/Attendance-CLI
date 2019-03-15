@@ -11,6 +11,8 @@ public class AttendanceCLIConfig {
 	public int attendeeRowStart;
 	public char weekStartCol;
 	public char weekFinishCol;
+	public boolean autosaveEnabled;
+	public String autosaveFile;
 
 	public AttendanceCLIConfig(Properties props) {
 		this.attendedSign = asString(props, "attended_sign", "✓");
@@ -18,10 +20,16 @@ public class AttendanceCLIConfig {
 		this.attendeeRowStart = asInt(props, "attendee_row_start", 1);
 		this.weekStartCol = asChar(props, "week_start_col", 'B');
 		this.weekFinishCol = asChar(props, "week_finish_col", 'G');
+		this.autosaveEnabled = asBoolean(props, "autosave_enable", true);
+		this.autosaveFile = asString(props, "autosave_file", "autosaved.xlsx");
 	}
 
 	public int weekLength() {
 		return (int) (weekFinishCol - weekStartCol) + 1;
+	}
+	
+	public void save() {
+		// TODO FEAT: Save config file into configurations.properties
 	}
 	
 	private String asString(Properties props, String key, String defaultValue) {
@@ -48,4 +56,10 @@ public class AttendanceCLIConfig {
 		}
 	}
 
+	private boolean asBoolean(Properties props, String key, boolean defaultValue) {
+		String value = props.getProperty(key);
+		
+		return Syntax.falsey(value) ? defaultValue : value.toLowerCase().matches("true");
+	}
+	
 }

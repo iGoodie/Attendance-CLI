@@ -1,7 +1,5 @@
 package com.programmer.igoodie.mode;
 
-import com.programmer.igoodie.command.named.CommandHelp;
-import com.programmer.igoodie.command.named.CommandMode;
 import com.programmer.igoodie.command.named.CommandWeek;
 import com.programmer.igoodie.command.structured.CommandAttendWeekly;
 
@@ -24,8 +22,6 @@ public class ModeWeek extends Mode {
 	
 	@Override
 	protected void registerCommands() {
-		registerCommand(new CommandHelp());
-		registerCommand(new CommandMode());
 		registerCommand(new CommandWeek());
 		registerCommand(new CommandAttendWeekly());
 	}
