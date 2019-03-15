@@ -30,9 +30,9 @@ public class CommandAttendInline extends StructuredCommand {
 	@Override
 	public CommandExample[] getExamples() {
 		return CommandExample.of(new String[][] {
-				{ "1800123 1 2 9 14", "Include attence of 1800123 on week#1, week#2, week#9, week#14." },
-				{ "1800123 *", "Include attendance of 1800123 on all weeks." }, { "1800123 * 1 2 9 14",
-						"Include attence of 1800123 on all weeks except week#1, week#2, week#9, week#14" } });
+				{ "1800123 1 2", "Include attence of 1800123 on week#1 and week#2." },
+				{ "1800123 *", "Include attendance of 1800123 on all weeks." },
+				{ "1800123 * 1 2", "Include attendance of 1800123 on all weeks except week#1 and week#2" } });
 	}
 
 	@Override
