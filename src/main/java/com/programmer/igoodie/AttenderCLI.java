@@ -1,6 +1,7 @@
 package com.programmer.igoodie;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
@@ -49,6 +50,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		
 		configs = new AttendanceCLIConfig(props);
 		
+		System.out.println("! - A sheet from a workbook is needed in order to start modifying.\n");
 		selectWorkbook();
 		selectAttendanceSheet();
 		
@@ -99,9 +101,14 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 				if (selection >= 0 && selection < workbooks.length) {
 					workbookFile = workbooks[selection];
-					workbook = WorkbookFactory.create(workbookFile);
+					
+					FileInputStream fis = new FileInputStream(workbookFile);
+					workbook = WorkbookFactory.create(fis);
+					
+					fis.close();
 					selected = true;
 					System.out.printf("✓ - Successfully loaded workbook: %s\n", workbookFile.getName());
+					
 				} else {
 					System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n", 0,
 							workbooks.length - 1);
@@ -224,7 +231,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 	public static void terminate() {
 		running = false;
-		// TODO: Save XLSX before terminating
+		performAutosave();
 	}
 
 }
