@@ -20,6 +20,10 @@ public class AttendanceCLIConfig {
 		this.weekFinishCol = asChar(props, "week_finish_col", 'G');
 	}
 
+	public int weekLength() {
+		return (int) (weekFinishCol - weekStartCol) + 1;
+	}
+	
 	private String asString(Properties props, String key, String defaultValue) {
 		String value = props.getProperty(key);
 		return Syntax.falsey(value) ? defaultValue : value;

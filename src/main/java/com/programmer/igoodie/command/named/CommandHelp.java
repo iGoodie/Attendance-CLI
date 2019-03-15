@@ -14,7 +14,7 @@ public class CommandHelp extends NamedCommand {
 
 	@Override
 	public String getUsage() {
-		return "HELP [command]";
+		return name + " [command]";
 	}
 
 	@Override

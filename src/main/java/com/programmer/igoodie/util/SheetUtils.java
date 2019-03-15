@@ -4,7 +4,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.programmer.igoodie.AttenderCLI;
 import com.programmer.igoodie.config.AttendanceCLIConfig;
 import com.programmer.igoodie.utils.system.Syntax;
 
@@ -45,7 +44,7 @@ public class SheetUtils {
 	}
 
 	public static int weekCol(int weekNo, AttendanceCLIConfig configs) {
-		int weekLength = (int) (AttenderCLI.getConfigs().weekFinishCol - AttenderCLI.getConfigs().weekStartCol) + 1;
+		int weekLength = configs.weekLength();
 
 		if (weekNo <= 0 || weekNo > weekLength)
 			return -1;

@@ -169,6 +169,10 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		File autosaveFile = FileUtils.getExternalFile("autosaved.xlsx");
 		WorkbookUtils.save(workbook, autosaveFile);
 	}
+
+	public static void changeMode(Mode mode) {
+		currentMode = mode;
+	}
 	
 	public static void handleInput(String rawInput) {
 		String[] args = rawInput.split("\\s+");
@@ -206,7 +210,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 		// Execute and check success
 		if (!command.execute(attendanceSheet, args)) {
-			System.out.printf("X - Internal error for command: %s\n", command.getName());
+//			System.out.printf("X - Error executing command: %s\n", command.getName());
 		}
 	}
 
@@ -225,7 +229,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 
 		// Execute and check success
 		if (!command.execute(attendanceSheet, structure)) {
-			System.out.printf("X - Internal error for strucure: %s\n", String.join(" ", structure));
+//			System.out.printf("X - Error executing strucure: %s\n", String.join(" ", structure));
 		}
 	}
 

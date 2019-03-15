@@ -12,6 +12,7 @@ public class CommandLegend extends NamedCommand {
 		"$ = User input is waited",
 		"[arg] = optional argument",
 		"<arg> = required argument",
+		"a|b|c = a or b or c",
 	};
 
 	public CommandLegend() {
