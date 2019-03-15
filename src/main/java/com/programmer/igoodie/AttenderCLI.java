@@ -57,7 +57,7 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 		System.out.print("---\n\n");
 
 		while (running) {
-			currentMode.printInputPrefix();
+			System.out.print(currentMode.getInputPrefix());
 
 			String rawInput = SCANNER.nextLine();
 

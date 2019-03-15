@@ -65,8 +65,8 @@ public abstract class Mode {
 		structuredCommands.add(command);
 	}
 	
-	public void printInputPrefix() {
-		System.out.print("$ ");
+	public String getInputPrefix() {
+		return "$ ";
 	}
 	
 }

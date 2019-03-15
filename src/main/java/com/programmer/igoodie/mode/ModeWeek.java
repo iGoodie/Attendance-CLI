@@ -18,8 +18,8 @@ public class ModeWeek extends Mode {
 	}
 	
 	@Override
-	public void printInputPrefix() {
-		System.out.printf("Week %d $ ", week);
+	public String getInputPrefix() {
+		return String.format("Week %d $ ", week);
 	}
 	
 	@Override
