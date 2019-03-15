@@ -166,6 +166,9 @@ public final class AttenderCLI implements AttendanceCLIConstants {
 	}
 
 	public static void performAutosave() {
+		if(!currentMode.isAutosaveEnabled())
+			return;
+		
 		File autosaveFile = FileUtils.getExternalFile("autosaved.xlsx");
 		WorkbookUtils.save(workbook, autosaveFile);
 	}

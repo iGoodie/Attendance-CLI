@@ -13,12 +13,14 @@ import lombok.Getter;
 public abstract class Mode {
 
 	protected @Getter String name;
-
+	protected @Getter boolean autosaveEnabled;
+	
 	HashMap<String, Command> namedCommands;
 	ArrayList<StructuredCommand> structuredCommands;
 
 	public Mode(String name) {
 		this.name = name;
+		this.autosaveEnabled = true;
 		this.namedCommands = new HashMap<>();
 		this.structuredCommands = new ArrayList<>();
 		registerCommands();
@@ -40,6 +42,10 @@ public abstract class Mode {
 	public Stream<? extends Command> commandStream() {
 		return Stream.concat(namedCommands.values().stream(), 
 				structuredCommands.stream());
+	}
+	
+	public void toggleAutosave() {
+		autosaveEnabled = !autosaveEnabled;
 	}
 	
 	protected abstract void registerCommands();

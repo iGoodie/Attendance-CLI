@@ -70,23 +70,22 @@ public class CommandAttendInline extends StructuredCommand {
 				weekExclusionList.add(Integer.parseInt(args[i]));
 			}
 
-			pushAttendancesExcept(sheet, attendeeId, weekExclusionList.stream().mapToInt(i -> i).toArray());
+			AttenderCLI.performAutosave();
+			return pushAttendancesExcept(sheet, attendeeId, weekExclusionList.stream().mapToInt(i -> i).toArray());
 
 		} else {			
-			pushAttendances(sheet, attendeeId, Arrays.stream(args, 1, args.length).mapToInt(Integer::parseInt).toArray());
+			AttenderCLI.performAutosave();
+			return pushAttendances(sheet, attendeeId, Arrays.stream(args, 1, args.length).mapToInt(Integer::parseInt).toArray());
 		}
-
-		AttenderCLI.performAutosave();
-		return true;
 	}
 
-	private void pushAttendances(Sheet sheet, double attendeeId, int[] weeks) {
+	private boolean pushAttendances(Sheet sheet, double attendeeId, int[] weeks) {
 		int colIndex = SheetUtils.colIndex(AttenderCLI.getConfigs().attendeeIdCol);
 		Row attendeeRow = SheetUtils.linearFindRow(sheet, colIndex, attendeeId);
 
 		if (Syntax.falsey(attendeeRow)) {
 			System.out.printf("X - No attendee with id %.0f was found.\n", attendeeId);
-			return;
+			return false;
 		}
 
 		for (int week : weeks) {
@@ -100,9 +99,11 @@ public class CommandAttendInline extends StructuredCommand {
 			if (SheetUtils.markCell(attendeeRow, weekCol, AttenderCLI.getConfigs().attendedSign))
 				System.out.printf("✓ - Marked %.0f attended at week %d\n", attendeeId, week);
 		}
+		
+		return true;
 	}
 
-	private void pushAttendancesExcept(Sheet sheet, double attendeeId, int[] exceptWeeks) {
+	private boolean pushAttendancesExcept(Sheet sheet, double attendeeId, int[] exceptWeeks) {
 		int weekLength = (int) (AttenderCLI.getConfigs().weekFinishCol - AttenderCLI.getConfigs().weekStartCol) + 1;
 		List<Integer> weeks = IntStream.rangeClosed(1, weekLength).boxed().collect(Collectors.toList());
 
@@ -110,7 +111,7 @@ public class CommandAttendInline extends StructuredCommand {
 			weeks.remove((Integer) exceptWeek);
 		}
 
-		pushAttendances(sheet, attendeeId, weeks.stream().mapToInt(i -> i).toArray());
+		return pushAttendances(sheet, attendeeId, weeks.stream().mapToInt(i -> i).toArray());
 	}
 
 }
