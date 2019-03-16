@@ -16,5 +16,6 @@ log/
 target/
 
 # Attender CLI Workpaces
+build/
 workspace/*.xlsx
 workspace/*.xlsb
