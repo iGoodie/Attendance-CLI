@@ -55,6 +55,7 @@ public class CommandAutosave extends NamedCommand {
 		boolean enable = args[0].toUpperCase().equals("ON");
 		AttendanceCLI.getConfigs().autosaveEnabled = enable;
 		AttendanceCLI.getConfigs().save();
+		System.out.printf("✓ - Autosaving is now %s.\n", enable ? "enabled" : "disabled");
 		return true;
 	}
 	
