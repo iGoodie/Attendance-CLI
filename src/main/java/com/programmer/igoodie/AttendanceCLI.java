@@ -168,7 +168,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 	}
 
 	public static void performAutosave() {
-		if(!currentMode.isAutosaveEnabled())
+		if(!configs.autosaveEnabled)
 			return;
 		
 		File autosaveFile = FileUtils.getExternalFile(configs.autosaveFile);
@@ -196,7 +196,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 
 		// Command is not found amongst all the commands
 		else {
-			System.out.println("X - Unknown command");
+			System.out.println("X - Unknown command. Execute HELP command for more info about commands.");
 		}
 	}
 

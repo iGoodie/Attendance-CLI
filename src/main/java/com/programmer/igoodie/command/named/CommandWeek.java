@@ -48,7 +48,7 @@ public class CommandWeek extends NamedCommand {
 		}
 
 		((ModeWeek) parentMode).setWeek(weekNo);
-
+		System.out.printf("✓ - Switched to week %d\n", weekNo);
 		return true;
 	}
 

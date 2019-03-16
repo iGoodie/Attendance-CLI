@@ -13,19 +13,21 @@ import lombok.Getter;
 public abstract class Mode {
 
 	protected @Getter String name;
-	protected @Getter boolean autosaveEnabled;
 	
 	HashMap<String, Command> namedCommands;
 	ArrayList<StructuredCommand> structuredCommands;
 
 	public Mode(String name) {
 		this.name = name;
-		this.autosaveEnabled = true;
 		this.namedCommands = new HashMap<>();
 		this.structuredCommands = new ArrayList<>();
 		registerCommands();
 	}
 
+	public String getDescription() {
+		return "UNKNOWN DESCRIPTION";
+	}
+	
 	public Command getCommand(String alias) {
 		return namedCommands.get(alias.toUpperCase());
 	}
@@ -46,10 +48,6 @@ public abstract class Mode {
 	
 	public int numberOfCommands() {
 		return namedCommands.size() + structuredCommands.size();
-	}
-	
-	public void toggleAutosave() {
-		autosaveEnabled = !autosaveEnabled;
 	}
 	
 	protected abstract void registerCommands();

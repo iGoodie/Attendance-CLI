@@ -16,6 +16,12 @@ public class ModeWeek extends Mode {
 	}
 	
 	@Override
+	public String getDescription() {
+		return "Contains weekly attending environment. "
+				+ "This mode can be used to attend attendees one by one for a specific week.";
+	}
+	
+	@Override
 	public String getInputPrefix() {
 		return String.format("Week %d $ ", week);
 	}

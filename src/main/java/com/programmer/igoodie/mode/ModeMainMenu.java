@@ -10,6 +10,11 @@ public class ModeMainMenu extends Mode {
 	}
 
 	@Override
+	public String getDescription() {
+		return "Initially loaded mode. It allows the execution of base (inline) commands.";
+	}
+	
+	@Override
 	protected void registerCommands() {
 		registerCommand(new CommandAttendInline());
 		registerCommand(new CommandLoad());

@@ -21,7 +21,7 @@ public class CommandMode extends NamedCommand {
 	
 	@Override
 	public String getDescription() {
-		return "Enters into a modifying mode.";
+		return "Enters into a modifying mode. Each mode has its unique commands and environment.";
 	}
 	
 	@Override
@@ -41,7 +41,9 @@ public class CommandMode extends NamedCommand {
 	@Override
 	public boolean execute(Sheet sheet, String[] args) {
 		if(args.length == 0) {
-			System.out.println("Modes:");
+			System.out.printf("Current mode: %s\n\n", parentMode.getName());
+			System.out.printf("Description:\n %s\n\n", parentMode.getDescription());
+			System.out.println("All Modes:");
 			Modes.modeStream().forEach(mode -> System.out.printf(" $ %s %s\n", name, mode.getName()));
 			return true;
 		}
