@@ -43,7 +43,7 @@ public abstract class Mode {
 
 	public Stream<? extends Command> commandStream() {
 		return Stream.concat(namedCommands.values().stream(), 
-				structuredCommands.stream());
+				structuredCommands.stream()).distinct();
 	}
 	
 	public int numberOfCommands() {

@@ -37,28 +37,29 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 	public static void main(String[] args) {
 		System.out.printf("✓ -  Welcome to %s! - Version %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
 		
+		// Change external path to %USER_DIR%/workspace
 		FileUtils.setExternalDataPath(System.getProperty("user.dir") + "/workspace");
 
 		System.out.printf("! - Your workbook(s) should be placed under /workspace folder.\n");
-		
 		System.out.print("\n---\n\n");
-
-		Properties props = FileUtils.readProperties(FileUtils.getExternalFile("configurations.properties"));
 		
+		// Load properties from file and construct configurations
+		Properties props = FileUtils.readProperties(FileUtils.getExternalFile("configurations.properties"));
 		if(Syntax.falsey(props)) {
 			System.out.println("X - Config file (configurations.properties) "
 					+ "is missing/corrupted. Program terminating.");
 			return;
 		}
-		
 		configs = new AttendanceCLIConfig(props);
 		
+		// Load workbook and select sheet
 		System.out.println("! - A sheet from a workbook is needed in order to start modifying.\n");
 		selectWorkbook();
+		System.out.print("\n");
 		selectAttendanceSheet();
-		
-		System.out.print("---\n\n");
+		System.out.print("\n---\n\n");
 
+		// Start CLI loop
 		while (running) {
 			System.out.print(currentMode.getInputPrefix());
 			String rawInput = SCANNER.nextLine();
@@ -73,6 +74,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 			System.out.print("\n---\n\n");
 		}
 
+		// Execute termination logic
 		System.out.printf("✓ -  Termination of %s succeeded. Goodbye!", PROGRAM_NAME);
 	}
 
@@ -112,17 +114,15 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 					System.out.printf("✓ - Successfully loaded workbook: %s\n", workbookFile.getName());
 					
 				} else {
-					System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n", 0,
+					System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n\n", 0,
 							workbooks.length - 1);
 				}
 
 			} catch (NumberFormatException e) {
-				System.out.println("X - Invalid workbook index.");
+				System.out.println("X - Invalid workbook index.\n");
 			} catch (IOException e) {
-				System.out.println("X - Selected workbook cannot be read. It might be corrupted.");
+				System.out.println("X - Selected workbook cannot be read. It might be corrupted.\n");
 			}
-
-			System.out.println();
 		}
 	}
 
@@ -154,16 +154,14 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 						System.out.printf("✓ - Successfully selected attendance sheet: %s\n",
 								attendanceSheet.getSheetName());
 					} else {
-						System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n", 0,
+						System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n\n", 0,
 								workbook.getNumberOfSheets() - 1);
 					}
 				}
 
 			} catch (NumberFormatException e) {
-				System.out.println("X - Invalid sheet indentifier.");
+				System.out.println("X - Invalid sheet indentifier.\n");
 			}
-
-			System.out.println();
 		}
 	}
 

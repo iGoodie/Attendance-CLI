@@ -27,7 +27,9 @@ public class CommandLoad extends NamedCommand {
 		System.out.println();
 		
 		AttendanceCLI.performAutosave();
+		
 		AttendanceCLI.selectWorkbook();
+		System.out.print("\n");
 		AttendanceCLI.selectAttendanceSheet();
 		
 		return true;
