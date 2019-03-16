@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.programmer.igoodie.command.Command;
+import com.programmer.igoodie.command.meta.CommandParser;
 import com.programmer.igoodie.command.named.NamedCommand;
 import com.programmer.igoodie.command.structured.StructuredCommand;
 import com.programmer.igoodie.config.AttendanceCLIConfig;
@@ -31,7 +32,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 	private @Getter static Mode currentMode = Modes.getMainMode();
 	private @Getter static AttendanceCLIConfig configs;
 	private static File workbookFile;
-	private static Workbook workbook;
+	private @Getter static Workbook workbook;
 	private static Sheet attendanceSheet;
 
 	public static void main(String[] args) {
@@ -178,7 +179,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 	}
 	
 	public static void handleInput(String rawInput) {
-		String[] args = rawInput.split("\\s+");
+		String[] args = CommandParser.intoTokens(rawInput);
 		Command command;
 
 		// Named command found within the mode
@@ -195,6 +196,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 		// Command is not found amongst all the commands
 		else {
 			System.out.println("X - Unknown command. Execute HELP command for more info about commands.");
+			// TODO FEAT: Suggest amongst all the commands
 		}
 	}
 

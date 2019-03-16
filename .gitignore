@@ -14,3 +14,7 @@
 # Maven
 log/
 target/
+
+# Attender CLI Workpaces
+workspace/*.xlsx
+workspace/*.xlsb
