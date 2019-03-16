@@ -47,6 +47,7 @@ public final class Modes {
 		m.registerCommand(new CommandAutosave());
 		m.registerCommand(new CommandMode());
 		m.registerCommand(new CommandLegend());
+		m.registerCommand(new CommandSave());
 	}
 
 }
