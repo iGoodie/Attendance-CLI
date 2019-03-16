@@ -54,9 +54,8 @@ public class CommandSave extends NamedCommand {
 		}
 			
 		// Save workbook to given path
-		WorkbookUtils.save(AttendanceCLI.getWorkbook(), savePath.toFile());
+		WorkbookUtils.save(AttendanceCLI.getCurrentWorkbook(), savePath.toFile());
 		System.out.printf("✓ - Successfully saved into %s\n", savePath);
-
 		return true;
 	}
 

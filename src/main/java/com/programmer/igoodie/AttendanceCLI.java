@@ -29,11 +29,13 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 	private static final Scanner SCANNER = new Scanner(System.in);
 
 	private static boolean running = true;
+	
 	private @Getter static Mode currentMode = Modes.getMainMode();
 	private @Getter static AttendanceCLIConfig configs;
-	private static File workbookFile;
-	private @Getter static Workbook workbook;
-	private static Sheet attendanceSheet;
+	
+	private @Getter static File currentWorkbookFile;
+	private @Getter static Workbook currentWorkbook;
+	private @Getter static Sheet currentAttendanceSheet;
 
 	public static void main(String[] args) {
 		System.out.printf("✓ -  Welcome to %s! - Version %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
@@ -45,7 +47,8 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 		System.out.print("\n---\n\n");
 		
 		// Load properties from file and construct configurations
-		Properties props = FileUtils.readProperties(FileUtils.getExternalFile("configurations.properties"));
+		File propsFile = FileUtils.getExternalFile(AttendanceCLIConfig.CONFIG_FILE_NAME);
+		Properties props = FileUtils.readProperties(propsFile);
 		if(Syntax.falsey(props)) {
 			System.out.println("X - Config file (configurations.properties) "
 					+ "is missing/corrupted. Program terminating.");
@@ -105,14 +108,14 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 				int selection = Integer.parseInt(SCANNER.nextLine());
 
 				if (selection >= 0 && selection < workbooks.length) {
-					workbookFile = workbooks[selection];
+					currentWorkbookFile = workbooks[selection];
 					
-					FileInputStream fis = new FileInputStream(workbookFile);
-					workbook = WorkbookFactory.create(fis);
+					FileInputStream fis = new FileInputStream(currentWorkbookFile);
+					currentWorkbook = WorkbookFactory.create(fis);
 					
 					fis.close();
 					selected = true;
-					System.out.printf("✓ - Successfully loaded workbook: %s\n", workbookFile.getName());
+					System.out.printf("✓ - Successfully loaded workbook: %s\n", currentWorkbookFile.getName());
 					
 				} else {
 					System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n\n", 0,
@@ -129,9 +132,9 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 
 	public static void selectAttendanceSheet() {
 		// Print all the sheets that the workbook has
-		System.out.printf("? - Select one of the sheets from %s: \n", workbookFile.getName());
-		workbook.sheetIterator().forEachRemaining(
-				sheet -> System.out.printf("[%d] %s\n", workbook.getSheetIndex(sheet), sheet.getSheetName()));
+		System.out.printf("? - Select one of the sheets from %s: \n", currentWorkbookFile.getName());
+		currentWorkbook.sheetIterator().forEachRemaining(
+				sheet -> System.out.printf("[%d] %s\n", currentWorkbook.getSheetIndex(sheet), sheet.getSheetName()));
 
 		// Select sheet index and save the reference
 		boolean selected = false;
@@ -141,22 +144,22 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 				System.out.print("Select Sheet (name/index) > ");
 				String selection = SCANNER.nextLine();
 
-				if (Syntax.truthy(sheet = workbook.getSheet(selection))) {
-					attendanceSheet = sheet;
+				if (Syntax.truthy(sheet = currentWorkbook.getSheet(selection))) {
+					currentAttendanceSheet = sheet;
 					selected = true;
 					System.out.printf("✓ - Successfully selected attendance sheet: %s\n",
-							attendanceSheet.getSheetName());
+							currentAttendanceSheet.getSheetName());
 				} else {
 					int selectionIndex = Integer.parseInt(selection);
 
-					if (selectionIndex >= 0 && selectionIndex < workbook.getNumberOfSheets()) {
-						attendanceSheet = workbook.getSheetAt(selectionIndex);
+					if (selectionIndex >= 0 && selectionIndex < currentWorkbook.getNumberOfSheets()) {
+						currentAttendanceSheet = currentWorkbook.getSheetAt(selectionIndex);
 						selected = true;
 						System.out.printf("✓ - Successfully selected attendance sheet: %s\n",
-								attendanceSheet.getSheetName());
+								currentAttendanceSheet.getSheetName());
 					} else {
 						System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n\n", 0,
-								workbook.getNumberOfSheets() - 1);
+								currentWorkbook.getNumberOfSheets() - 1);
 					}
 				}
 
@@ -171,7 +174,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 			return;
 		
 		File autosaveFile = FileUtils.getExternalFile(configs.autosaveFile);
-		WorkbookUtils.save(workbook, autosaveFile);
+		WorkbookUtils.save(currentWorkbook, autosaveFile);
 	}
 
 	public static void changeMode(Mode mode) {
@@ -216,7 +219,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 		}
 
 		// Execute and check success
-		if (!command.execute(attendanceSheet, args)) {
+		if (!command.execute(currentAttendanceSheet, args)) {
 //			System.out.printf("X - Error executing command: %s\n", command.getName());
 		}
 	}
@@ -237,7 +240,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 		}
 
 		// Execute and check success
-		if (!command.execute(attendanceSheet, structure)) {
+		if (!command.execute(currentAttendanceSheet, structure)) {
 //			System.out.printf("X - Error executing strucure: %s\n", String.join(" ", structure));
 		}
 	}

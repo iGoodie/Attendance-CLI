@@ -5,6 +5,8 @@ import java.util.Properties;
 import com.programmer.igoodie.utils.system.Syntax;
 
 public class AttendanceCLIConfig {
+	
+	public static final String CONFIG_FILE_NAME = "configurations.properties";
 
 	public String attendedSign;
 	public char attendeeIdCol;
