@@ -48,7 +48,7 @@ public class CommandAttendWeekly extends StructuredCommand {
 		int weekCol = SheetUtils.weekCol(weekNo, AttendanceCLI.getConfigs());
 		
 		SheetUtils.markCell(attendeeRow, weekCol, AttendanceCLI.getConfigs().attendedSign);
-		System.out.printf("✓ - Marked %.0f attended at week %d\n", attendeeId, weekNo);
+		System.out.printf("✓ - Marked %.0f as attended at week %d\n", attendeeId, weekNo);
 		AttendanceCLI.performAutosave();
 		
 		return true;

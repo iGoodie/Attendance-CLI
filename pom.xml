@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.programmer.igoodie</groupId>
 	<artifactId>attendance-cli</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Attendance CLI</name>
+	<version>0.1.0-ALPHA</version>
+	<name>Attendance-CLI</name>
 
 	<repositories>
 		<repository>

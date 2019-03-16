@@ -97,7 +97,7 @@ public class CommandAttendInline extends StructuredCommand {
 			}
 			
 			if (SheetUtils.markCell(attendeeRow, weekCol, AttendanceCLI.getConfigs().attendedSign))
-				System.out.printf("✓ - Marked %.0f attended at week %d\n", attendeeId, week);
+				System.out.printf("✓ - Marked %.0f as attended at week %d\n", attendeeId, week);
 		}
 		
 		return true;
