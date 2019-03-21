@@ -70,12 +70,14 @@ public class CommandAttendInline extends StructuredCommand {
 				weekExclusionList.add(Integer.parseInt(args[i]));
 			}
 
+			boolean pushed = pushAttendancesExcept(sheet, attendeeId, weekExclusionList.stream().mapToInt(i -> i).toArray());
 			AttendanceCLI.performAutosave();
-			return pushAttendancesExcept(sheet, attendeeId, weekExclusionList.stream().mapToInt(i -> i).toArray());
+			return pushed;
 
-		} else {			
+		} else {	
+			boolean pushed = pushAttendances(sheet, attendeeId, Arrays.stream(args, 1, args.length).mapToInt(Integer::parseInt).toArray());
 			AttendanceCLI.performAutosave();
-			return pushAttendances(sheet, attendeeId, Arrays.stream(args, 1, args.length).mapToInt(Integer::parseInt).toArray());
+			return pushed;
 		}
 	}
 
