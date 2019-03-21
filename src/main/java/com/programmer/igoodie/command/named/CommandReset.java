@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import com.programmer.igoodie.AttendanceCLI;
 import com.programmer.igoodie.command.meta.CommandExample;
 import com.programmer.igoodie.util.SheetUtils;
+import com.programmer.igoodie.util.StringValidator;
 import com.programmer.igoodie.util.Weeks;
 import com.programmer.igoodie.utils.system.Syntax;
 
@@ -44,18 +45,14 @@ public class CommandReset extends NamedCommand {
 	
 	@Override
 	public boolean correctSyntax(String[] commandArgs) {
-		try {
-			// First arg should be double
-			Double.parseDouble(commandArgs[0]);
-			
-			// Other args should be valid week format
-			if(!Weeks.validateArgs(Arrays.copyOfRange(commandArgs, 1, commandArgs.length)))
-				return false;
-			
-		} catch (NumberFormatException e) {
+		// First arg should be numeric
+		if (!StringValidator.isNumeric(commandArgs[0]))
 			return false;
-		}
-		
+
+		// Other args should be valid week format
+		if (!Weeks.validateArgs(Arrays.copyOfRange(commandArgs, 1, commandArgs.length)))
+			return false;
+
 		return true;
 	}
 	

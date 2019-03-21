@@ -1,15 +1,12 @@
 package com.programmer.igoodie;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.programmer.igoodie.command.Command;
 import com.programmer.igoodie.command.meta.CommandParser;
@@ -23,19 +20,20 @@ import com.programmer.igoodie.utils.io.FileUtils;
 import com.programmer.igoodie.utils.system.Syntax;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public final class AttendanceCLI implements AttendanceCLIConstants {
 
-	private static final Scanner SCANNER = new Scanner(System.in);
+	public static final Scanner SCANNER = new Scanner(System.in);
 
 	private static boolean running = true;
 	
 	private @Getter static Mode currentMode = Modes.getMainMode();
 	private @Getter static AttendanceCLIConfig configs;
 	
-	private @Getter static File currentWorkbookFile;
-	private @Getter static Workbook currentWorkbook;
-	private @Getter static Sheet currentAttendanceSheet;
+	private @Getter @Setter static File currentWorkbookFile;
+	private @Getter @Setter static Workbook currentWorkbook;
+	private @Getter @Setter static Sheet currentAttendanceSheet;
 
 	public static void main(String[] args) {
 		System.out.printf("✓ -  Welcome to %s! - Version %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
@@ -58,9 +56,7 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 		
 		// Load workbook and select sheet
 		System.out.println("! - A sheet from a workbook is needed in order to start modifying.\n");
-		selectWorkbook();
-		System.out.print("\n");
-		selectAttendanceSheet();
+		handleInput("LOAD");
 		System.out.print("\n---\n\n");
 
 		// Start CLI loop
@@ -82,99 +78,18 @@ public final class AttendanceCLI implements AttendanceCLIConstants {
 		System.out.printf("✓ -  Termination of %s succeeded. Goodbye!", PROGRAM_NAME);
 	}
 
-	public static void selectWorkbook() {
-		// Filter workbook files from /workspace folder
-		File[] workbooks = FileUtils.getExternalFile("")
-				.listFiles((dir, name) -> name.toLowerCase().matches(".*\\.(xlsx|xlsb)"));
-
-		// No workbooks were found. Terminate immidiately
-		if (Syntax.falsey(workbooks) || workbooks.length == 0) {
-			System.out.println("X - No workbook within /workspace folder. Terminating the program.");
-			System.exit(0);
-		}
-
-		System.out.printf("? - Select one of the accesible workbooks (under /workspace folder):\n");
-
-		// Print all the visible workspaces
-		for (int i = 0; i < workbooks.length; i++) {
-			System.out.printf("[%d] %s\n", i, workbooks[i].getName());
-		}
-
-		// Select workbook index and load it in
-		boolean selected = false;
-		while (!selected) {
-			try {
-				System.out.print("Select Workbook (index) > ");
-				int selection = Integer.parseInt(SCANNER.nextLine());
-
-				if (selection >= 0 && selection < workbooks.length) {
-					currentWorkbookFile = workbooks[selection];
-					
-					FileInputStream fis = new FileInputStream(currentWorkbookFile);
-					currentWorkbook = WorkbookFactory.create(fis);
-					
-					fis.close();
-					selected = true;
-					System.out.printf("✓ - Successfully loaded workbook: %s\n", currentWorkbookFile.getName());
-					
-				} else {
-					System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n\n", 0,
-							workbooks.length - 1);
-				}
-
-			} catch (NumberFormatException e) {
-				System.out.println("X - Invalid workbook index.\n");
-			} catch (IOException e) {
-				System.out.println("X - Selected workbook cannot be read. It might be corrupted.\n");
-			}
-		}
-	}
-
-	public static void selectAttendanceSheet() {
-		// Print all the sheets that the workbook has
-		System.out.printf("? - Select one of the sheets from %s: \n", currentWorkbookFile.getName());
-		currentWorkbook.sheetIterator().forEachRemaining(
-				sheet -> System.out.printf("[%d] %s\n", currentWorkbook.getSheetIndex(sheet), sheet.getSheetName()));
-
-		// Select sheet index and save the reference
-		boolean selected = false;
-		Sheet sheet;
-		while (!selected) {
-			try {
-				System.out.print("Select Sheet (name/index) > ");
-				String selection = SCANNER.nextLine();
-
-				if (Syntax.truthy(sheet = currentWorkbook.getSheet(selection))) {
-					currentAttendanceSheet = sheet;
-					selected = true;
-					System.out.printf("✓ - Successfully selected attendance sheet: %s\n",
-							currentAttendanceSheet.getSheetName());
-				} else {
-					int selectionIndex = Integer.parseInt(selection);
-
-					if (selectionIndex >= 0 && selectionIndex < currentWorkbook.getNumberOfSheets()) {
-						currentAttendanceSheet = currentWorkbook.getSheetAt(selectionIndex);
-						selected = true;
-						System.out.printf("✓ - Successfully selected attendance sheet: %s\n",
-								currentAttendanceSheet.getSheetName());
-					} else {
-						System.out.printf("X - Index out of bound. Please enter some value between [%d,%d]\n\n", 0,
-								currentWorkbook.getNumberOfSheets() - 1);
-					}
-				}
-
-			} catch (NumberFormatException e) {
-				System.out.println("X - Invalid sheet indentifier.\n");
-			}
-		}
-	}
-
-	public static void performAutosave() {
+	public static boolean performAutosave() {
 		if(!configs.autosaveEnabled)
-			return;
+			return true;
+		
+		if(Syntax.falsey(currentWorkbook))
+			return true;
 		
 		File autosaveFile = FileUtils.getExternalFile(configs.autosaveFile);
-		WorkbookUtils.save(currentWorkbook, autosaveFile);
+		if(!WorkbookUtils.save(currentWorkbook, autosaveFile)) 
+			return false;
+
+		return true;
 	}
 
 	public static void changeMode(Mode mode) {
