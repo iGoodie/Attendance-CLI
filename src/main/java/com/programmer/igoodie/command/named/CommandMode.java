@@ -77,6 +77,7 @@ public class CommandMode extends NamedCommand {
 		
 		// Change to new mode
 		AttendanceCLI.changeMode(mode);
+		System.out.printf("✓  - Mode changed to %s\n", mode.getName());
 		return true;
 	}
 	
