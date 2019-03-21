@@ -1,5 +1,7 @@
 package com.programmer.igoodie.command.named;
 
+import java.util.stream.Stream;
+
 import org.apache.poi.ss.usermodel.Sheet;
 
 public class CommandLegend extends NamedCommand {
@@ -31,11 +33,9 @@ public class CommandLegend extends NamedCommand {
 	
 	@Override
 	public boolean execute(Sheet sheet, String[] args) {
-		for(String legendLabel : LEGEND_LABELS) {
-			System.out.printf(" %s\n", legendLabel);
-		}
+		Stream.of(LEGEND_LABELS).forEach(lbl -> System.out.printf(" %s\n", lbl));
 		
 		return true;
 	}
-	
+
 }

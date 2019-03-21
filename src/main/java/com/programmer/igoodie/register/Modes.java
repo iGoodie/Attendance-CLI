@@ -11,6 +11,7 @@ import com.programmer.igoodie.command.named.CommandExit;
 import com.programmer.igoodie.command.named.CommandHelp;
 import com.programmer.igoodie.command.named.CommandLegend;
 import com.programmer.igoodie.command.named.CommandMode;
+import com.programmer.igoodie.command.named.CommandReset;
 import com.programmer.igoodie.command.named.CommandSave;
 import com.programmer.igoodie.mode.Mode;
 
@@ -46,6 +47,7 @@ public final class Modes {
 		m.registerCommand(new CommandExit());
 		m.registerCommand(new CommandAutosave());
 		m.registerCommand(new CommandMode());
+		m.registerCommand(new CommandReset());
 		m.registerCommand(new CommandLegend());
 		m.registerCommand(new CommandSave());
 	}

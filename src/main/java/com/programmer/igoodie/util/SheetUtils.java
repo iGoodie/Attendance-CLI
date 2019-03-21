@@ -1,6 +1,7 @@
 package com.programmer.igoodie.util;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -65,6 +66,22 @@ public class SheetUtils {
 		}
 		
 		cell.setCellValue(value);
+
+		return true;
+	}
+	
+	public static boolean emptyCell(Row row, int col) {
+		if (Syntax.falsey(row))
+			return false;
+
+		Cell cell = row.getCell(col);
+		
+		if (Syntax.falsey(cell))
+			return false;
+		
+		// TODO FIX: Keep EVERY cell style
+		
+		cell.setCellType(CellType.BLANK);
 
 		return true;
 	}
